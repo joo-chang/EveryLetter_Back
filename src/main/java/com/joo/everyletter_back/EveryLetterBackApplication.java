@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class EveryLetterBackApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(EveryLetterBackApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(EveryLetterBackApplication.class, args);
+	}
 
 }
