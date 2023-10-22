@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/study_db?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: ckdckd
+  jpa:
+    show-sql: true
+#   Swagger 3 ?? ? path? ?? ?? ??
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
