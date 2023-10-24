@@ -1,12 +1,31 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/study_db?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/everyletter_db?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: ckdckd
   jpa:
     show-sql: true
-#   Swagger 3 ?? ? path? ?? ?? ??
+    hibernate:
+      ddl-auto: update #create update none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+#server:
+#  port: 8080
+#  servlet:
+#    context-path: /
+#    encoding:
+#      charset: UTF-8
+#      enabled: true
+#      force: true
+#logging:
+#  level:
+#    me.silvernine: DEBUG
