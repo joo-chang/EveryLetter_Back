@@ -12,33 +12,22 @@ public class ServiceException extends RuntimeException{
     public static final ServiceException ALREADY_EXIST_EMAIL = new ServiceException(ErrorCode.ALREADY_EXIST_EMAIL);
     public static final ServiceException ALREADY_EXIST_NICKNAME = new ServiceException(ErrorCode.ALREADY_EXIST_NICKNAME);
     public static final ServiceException REPLY_NOT_FOUND = new ServiceException(ErrorCode.REPLY_NOT_FOUND);
-    public static final ServiceException REREPLY_NOT_FOUND = new ServiceException(ErrorCode.REREPLY_NOT_FOUND);
     public static final ServiceException CONTENT_LIMIT_EXCEED = new ServiceException(ErrorCode.CONTENT_LIMIT_EXCEED);
     public static final ServiceException USER_INFO_NOT_MATCH = new ServiceException(ErrorCode.USER_INFO_NOT_MATCH);
     public static final ServiceException WRONG_EMAIL_OR_PASSWORD = new ServiceException(ErrorCode.WRONG_EMAIL_OR_PASSWORD);
     public static final ServiceException WRONG_BEFORE_PASSWORD = new ServiceException(ErrorCode.WRONG_BEFORE_PASSWORD);
     public static final ServiceException NOT_EXPIRED_ACCESS_TOKEN = new ServiceException(ErrorCode.NOT_EXPIRED_ACCESS_TOKEN);
-    public static final ServiceException INVALID_IMAGE_EXTENSION = new ServiceException(ErrorCode.INVALID_IMAGE_EXTENSION);
     public static final ServiceException INVALID_TOKEN = new ServiceException(ErrorCode.INVALID_TOKEN);
     public static final ServiceException FORBIDDEN = new ServiceException(ErrorCode.FORBIDDEN);
     public static final ServiceException EXPIRED_OR_PREVIOUS_REFRESH_TOKEN = new ServiceException(ErrorCode.EXPIRED_OR_PREVIOUS_REFRESH_TOKEN);
     public static final ServiceException USER_NOT_FOUND = new ServiceException(ErrorCode.USER_NOT_FOUND);
     public static final ServiceException FEED_NOT_FOUND = new ServiceException(ErrorCode.FEED_NOT_FOUND);
-    public static final ServiceException NOTICE_NOT_FOUND = new ServiceException(ErrorCode.NOTICE_NOT_FOUND);
     public static final ServiceException FAILED_FILE_UPLOAD = new ServiceException(ErrorCode.FAILED_FILE_UPLOAD);
-    public static final ServiceException FAILED_CACHE_GET_OPERATION = new ServiceException(ErrorCode.FAILED_CACHE_GET_OPERATION);
-    public static final ServiceException HASHTAG_LIMIT_EXCEED = new ServiceException(ErrorCode.HASHTAG_LIMIT_EXCEED);
-    public static final ServiceException IMAGE_FILE_COUNT_LIMIT_EXCEED = new ServiceException(ErrorCode.IMAGE_FILE_COUNT_LIMIT_EXCEED);
-    public static final ServiceException FAILED_CACHE_PUT_OPERATION = new ServiceException(ErrorCode.FAILED_CACHE_PUT_OPERATION);
-    public static final ServiceException NULL_AND_EMPTY_STRING_NOT_ALLOWED = new ServiceException(ErrorCode.NULL_AND_EMPTY_STRING_NOT_ALLOWED);
     public static final ServiceException INTERNAL_SERVER_ERROR = new ServiceException(ErrorCode.INTERNAL_SERVER_ERROR);
     public static final ServiceException FAILED_SEND_EMAIL = new ServiceException(ErrorCode.FAILED_SEND_EMAIL);
     public static final ServiceException FOLLOW_LIMIT_EXCEED = new ServiceException(ErrorCode.FOLLOW_LIMIT_EXCEED);
     public static final ServiceException FOLLOWING_SELF_NOT_ALLOWED = new ServiceException(ErrorCode.FOLLOWING_SELF_NOT_ALLOWED);
-    public static final ServiceException DUPLICATED_FOLLOW_OR_LIKE = new ServiceException(ErrorCode.DUPLICATED_FOLLOW_OR_LIKE);
-    public static final ServiceException LIKE_NUMBER_BELLOW_ZERO = new ServiceException(ErrorCode.LIKE_NUMBER_BELLOW_ZERO);
     public static final ServiceException ALREADY_EXIST_USER = new ServiceException(ErrorCode.ALREADY_EXIST_USER);
-    public static final ServiceException UPDATE_PASSWORD_NOT_ALLOWED_FOR_KAKAO_USER = new ServiceException(ErrorCode.UPDATE_PASSWORD_NOT_ALLOWED_FOR_KAKAO_USER);
 
 
     private final ErrorCode errorCode;
