@@ -17,7 +17,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
+jwt:
+  token:
+    secret: "secretKey"
 #server:
 #  port: 8080
 #  servlet:
