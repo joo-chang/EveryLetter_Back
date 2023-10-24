@@ -1,4 +1,4 @@
-package com.joo.everyletter_back.common.config;
+package com.joo.everyletter_back.common.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
