@@ -32,4 +32,17 @@ public class UserService {
 
         return "SUCCESS";
     }
+
+    public String login(String email, String password) {
+        // email 없음
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> ServiceException.USER_NOT_FOUND);
+        // password 틀림
+        if (!encoder.matches(user.getPassword(), password)) {
+            throw ServiceException.WRONG_EMAIL_OR_PASSWORD;
+        }
+
+        //
+        return "Token";
+    }
 }

@@ -1,6 +1,7 @@
 package com.joo.everyletter_back.user.controller;
 
 import com.joo.everyletter_back.user.dto.UserJoinReq;
+import com.joo.everyletter_back.user.dto.UserLoginReq;
 import com.joo.everyletter_back.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,5 +23,11 @@ public class UserController {
         userService.join(userJoinReq.getEmail(), userJoinReq.getPassword());
 
         return ResponseEntity.ok().body("회원가입 성공!");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserLoginReq userLoginReq) {
+        String token = userService.login(userLoginReq.getEmail(), userLoginReq.getPassword());
+        return ResponseEntity.ok().body(token);
     }
 }
