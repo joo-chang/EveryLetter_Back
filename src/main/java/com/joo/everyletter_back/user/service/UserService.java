@@ -1,16 +1,21 @@
 package com.joo.everyletter_back.user.service;
 
 import com.joo.everyletter_back.common.exception.ServiceException;
+import com.joo.everyletter_back.common.model.entity.Role;
 import com.joo.everyletter_back.common.model.entity.User;
 import com.joo.everyletter_back.common.model.repository.UserRepository;
 import com.joo.everyletter_back.common.util.JwtUtil;
+import com.joo.everyletter_back.user.dto.UserJoinReq;
+import com.joo.everyletter_back.user.dto.UserLoginResp;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -18,18 +23,20 @@ public class UserService {
     @Value("${jwt.token.secret}")
     private String key;
     private Long expireTimeMs = 1000 * 60 * 60l;
-    public String join(String email, String password) {
+
+    public String join(UserJoinReq userJoinReq) {
 
         // email 중복 체크
-        userRepository.findByEmail(email)
+        userRepository.findByEmail(userJoinReq.getEmail())
                 .ifPresent(user -> {
                     throw ServiceException.ALREADY_EXIST_EMAIL;
                 });
-
         // 저장
         User user = User.builder()
-                .email(email)
-                .password(encoder.encode(password))
+                .email(userJoinReq.getEmail())
+                .password(encoder.encode(userJoinReq.getPassword()))
+                .nickname(userJoinReq.getNickname())
+                .role(Role.ROLE_USER)
                 .build();
         userRepository.save(user);
 
@@ -37,7 +44,7 @@ public class UserService {
         return "SUCCESS";
     }
 
-    public String login(String email, String password) {
+    public UserLoginResp login(String email, String password) {
         // email 없음
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> ServiceException.USER_NOT_FOUND);
@@ -47,6 +54,9 @@ public class UserService {
         }
 
         String token = JwtUtil.createJwt(user.getEmail(), key, expireTimeMs);
-        return token;
+        return UserLoginResp.builder()
+                .token(token)
+                .build();
     }
+
 }

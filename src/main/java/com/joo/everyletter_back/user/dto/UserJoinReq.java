@@ -8,4 +8,5 @@ import lombok.Getter;
 public class UserJoinReq {
     private String email;
     private String password;
+    private String nickname;
 }

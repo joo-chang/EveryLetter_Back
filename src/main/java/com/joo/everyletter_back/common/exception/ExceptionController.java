@@ -45,4 +45,5 @@ public class ExceptionController {
         log.error(e.getMessage());
         return ApiErrResp.from(ErrorCode.INTERNAL_SERVER_ERROR);
     }
+
 }

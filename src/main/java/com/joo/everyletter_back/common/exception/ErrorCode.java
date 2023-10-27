@@ -14,7 +14,6 @@ public enum ErrorCode {
     ALREADY_EXIST_NICKNAME(HttpStatus.BAD_REQUEST, "ALREADY_EXIST_NICKNAME", "중복된 닉네임입니다."),
     ALREADY_EXIST_USER(HttpStatus.BAD_REQUEST, "ALREADY_EXIST_USER", "이미 가입한 회원입니다." ),
     WRONG_BEFORE_PASSWORD(HttpStatus.BAD_REQUEST, "WRONG_BEFORE_PASSWORD", "이전 비밀번호가 일치하지 않습니다."),
-    INVALID_TOKEN(HttpStatus.BAD_REQUEST, "INVALID_TOKEN", "유효하지 않은 토큰입니다."),
     NOT_EXPIRED_ACCESS_TOKEN(HttpStatus.BAD_REQUEST, "NOT_EXPIRED_ACCESS_TOKEN", "만료되지 않은 Access Token입니다."),
     FOLLOW_LIMIT_EXCEED(HttpStatus.BAD_REQUEST, "FOLLOW_LIMIT_EXCEED", "5명을 초과하여 구독 할 수 없습니다."),
     FOLLOWING_SELF_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "FOLLOWING_SELF_NOT_ALLOWED", "자기 자신을 구독 하는 것은 불가능합니다."),
@@ -23,6 +22,7 @@ public enum ErrorCode {
 
     /* 401 */
     ACCESS_DENIED(HttpStatus.UNAUTHORIZED, "ACCESS_DENIED", "유효한 인증 정보가 아닙니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "INVALID_TOKEN", "유효하지 않은 토큰입니다."),
     WRONG_EMAIL_OR_PASSWORD(HttpStatus.UNAUTHORIZED, "WRONG_EMAIL_OR_PASSWORD", "잘못된 이메일 혹은 비밀번호입니다."),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "EXPIRED_ACCESS_TOKEN", "Access Token이 만료되었습니다. 토큰을 재발급해주세요"),
 
