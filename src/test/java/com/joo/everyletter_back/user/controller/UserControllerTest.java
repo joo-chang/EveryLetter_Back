@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
+@MockBean(JpaMetamodelMappingContext.class)
 class UserControllerTest {
 
     @Autowired
@@ -39,11 +41,12 @@ class UserControllerTest {
     void join() throws Exception {
         String email = "jooc03@gmail.com";
         String password = "123qwe";
+        String nickname = "창창";
 
         mockMvc.perform(post("/api/v1/users/join")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinReq(email, password))))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinReq(email, password, nickname))))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -55,13 +58,14 @@ class UserControllerTest {
     void join_fail() throws Exception {
         String email = "jooc03@gmail.com";
         String password = "123qwe";
+        String nickname = "창창";
 
-        when(userService.join(any(), any()))
+        when(userService.join(any()))
                 .thenThrow(ServiceException.INTERNAL_SERVER_ERROR);
         mockMvc.perform(post("/api/v1/users/join")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinReq(email, password))))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinReq(email, password, nickname))))
                 .andDo(print())
                 .andExpect(status().is5xxServerError());
 
@@ -71,11 +75,9 @@ class UserControllerTest {
     @DisplayName("로그인 성공")
     @WithMockUser
     void login_success() throws Exception {
-        String email = "jooc01@gmail.com";
-        String password = "123qwe";
+        String email = "jooc02@gmail.com";
+        String password = "123qwe2@";
 
-        when(userService.login(any(), any()))
-                .thenReturn("token");
 
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
