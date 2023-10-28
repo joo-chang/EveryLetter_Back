@@ -8,10 +8,23 @@ import java.util.Date;
 @Slf4j
 public class JwtUtil {
 
+    /**
+     * 토큰에서 email 찾기
+     * @param token
+     * @param secretKey
+     * @return
+     */
     public static String getEmail(String token, String secretKey) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
                 .getBody().get("email", String.class);
     }
+
+    /**
+     * 토큰 유효성 검증
+     * @param token
+     * @param secretKey
+     * @return
+     */
     public static boolean validateToken(String token, String secretKey) {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
@@ -27,6 +40,14 @@ public class JwtUtil {
         }
         return false;
     }
+
+    /**
+     * JWT 토큰 발급
+     * @param email ID
+     * @param key secret Key
+     * @param expireTimeMs 만료시간
+     * @return
+     */
     public static String createJwt(String email, String key, long expireTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("email", email);

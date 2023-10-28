@@ -35,6 +35,12 @@ public class SecurityConfig {
     @Value("${jwt.token.secret}")
     private String secretKey;
 
+    /**
+     * 접근 제어
+     * @param httpSecurity
+     * @return
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity

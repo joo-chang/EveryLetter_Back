@@ -19,6 +19,13 @@ public class MailService {
 
     private final JavaMailSender emailSender;
 
+    /**
+     * 메일 발송
+     * @param toEmail 수신 email
+     * @param title 제목
+     * @param text 내용
+     * @throws MessagingException
+     */
     public void sendEmail(String toEmail,
                           String title,
                           String text) throws MessagingException {

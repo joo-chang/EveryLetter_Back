@@ -17,6 +17,11 @@ import java.util.List;
 @Slf4j
 @RestControllerAdvice
 public class ExceptionController {
+    /**
+     * 모든 ServiceException 처리 핸들러
+     * @param e
+     * @return
+     */
     @ExceptionHandler(ServiceException.class)
     protected ResponseEntity<ApiErrResp> handleBaseException(ServiceException e) {
         return ResponseEntity
@@ -40,6 +45,11 @@ public class ExceptionController {
         return resp;
     }
 
+    /**
+     * RuntimeException 발생 시 ServiceException 처리
+     * @param e
+     * @return
+     */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     protected ApiErrResp handleRuntimeException(RuntimeException e) {

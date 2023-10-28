@@ -11,20 +11,25 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-/**
- * 패스워드 암호화
- */
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
+    /**
+     * 패스워드 암호화
+     * @return
+     */
     @Bean
     public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * UserDetails 회원 정보 세팅
+     * @return
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return (username -> {

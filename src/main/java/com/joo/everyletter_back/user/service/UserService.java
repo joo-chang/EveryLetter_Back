@@ -45,7 +45,7 @@ public class UserService {
     public void emailSend(UserEmailSendReq userEmailSendReq) throws IOException, MessagingException {
         checkDuplicatedEmail(userEmailSendReq.getEmail());
         String title = "[EveryLetter] 회원가입 인증 메일 입니다.";
-        String authCode = CommonUtil.createCode();
+        String authCode = CommonUtil.createCode(6);
         String sendMsg = readHtmlFile("mailSend.html");
 
         sendMsg = sendMsg.replace("[]", authCode);
