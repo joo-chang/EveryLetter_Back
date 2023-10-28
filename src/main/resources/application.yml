@@ -22,10 +22,29 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+#    username: travelwithme.mail@gmail.com
+    username: cccxhang001@gmail.com
+#    password: puofrxedultxqtul
+    password: ppntnbuaenhlcxse
+    properties:
+      mail:
+        smtp:
+          auth: true  #SMTP 서버 인증 여부 / Gmail은 서버 인증 요구하기 때문에 true
+          starttls:
+            enable: true  # SMTP서버가 TLS 사용하여 안전한 연결을 요구하는 경우 / TLS는 데이터를 암호화하여 안전한 전송 보장 프로토콜
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    auth-code-expiration-millis: 1800000  # 인증 코드 만료 시간 30분
+
 jwt:
   token:
     secret: "secretKey"

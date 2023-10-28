@@ -30,7 +30,6 @@ public class ServiceException extends RuntimeException{
     public static final ServiceException FOLLOWING_SELF_NOT_ALLOWED = new ServiceException(ErrorCode.FOLLOWING_SELF_NOT_ALLOWED);
     public static final ServiceException ALREADY_EXIST_USER = new ServiceException(ErrorCode.ALREADY_EXIST_USER);
 
-
     private final ErrorCode errorCode;
 
     // 의도적인 예외이므로 stack trace 제거 (불필요한 예외처리 비용 제거)

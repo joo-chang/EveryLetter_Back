@@ -1,6 +1,7 @@
 package com.joo.everyletter_back.user.controller;
 
 import com.joo.everyletter_back.common.response.ApiSuccResp;
+import com.joo.everyletter_back.user.dto.UserEmailSendReq;
 import com.joo.everyletter_back.user.dto.UserJoinReq;
 import com.joo.everyletter_back.user.dto.UserLoginReq;
 import com.joo.everyletter_back.user.dto.UserLoginResp;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/users")
@@ -21,6 +24,11 @@ public class UserController {
 
     private final UserService userService;
 
+    @PostMapping("/join/emailsend")
+    public ApiSuccResp<?> emailSend(@RequestBody UserEmailSendReq userEmailSendReq) throws IOException, MessagingException {
+        userService.emailSend(userEmailSendReq);
+        return ApiSuccResp.NO_DATA_RESPONSE;
+    }
     @PostMapping("/join")
     public ApiSuccResp<?> join(@RequestBody UserJoinReq userJoinReq) {
 
