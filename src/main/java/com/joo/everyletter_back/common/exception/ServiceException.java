@@ -1,5 +1,6 @@
 package com.joo.everyletter_back.common.exception;
 
+import com.joo.everyletter_back.common.enumeration.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

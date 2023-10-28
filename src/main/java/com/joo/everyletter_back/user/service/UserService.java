@@ -1,11 +1,12 @@
 package com.joo.everyletter_back.user.service;
 
 import com.joo.everyletter_back.common.exception.ServiceException;
-import com.joo.everyletter_back.common.model.entity.Role;
+import com.joo.everyletter_back.common.enumeration.Role;
 import com.joo.everyletter_back.common.model.entity.User;
 import com.joo.everyletter_back.common.model.repository.UserRepository;
 import com.joo.everyletter_back.common.util.JwtUtil;
 import com.joo.everyletter_back.user.dto.UserJoinReq;
+import com.joo.everyletter_back.user.dto.UserLoginReq;
 import com.joo.everyletter_back.user.dto.UserLoginResp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,17 +40,20 @@ public class UserService {
                 .role(Role.ROLE_USER)
                 .build();
         userRepository.save(user);
-
-
-        return "SUCCESS";
+        return null;
     }
 
-    public UserLoginResp login(String email, String password) {
+    public UserLoginResp login(UserLoginReq userLoginReq) {
         // email 없음
-        User user = userRepository.findByEmail(email)
+        log.info(encoder.encode("123qwe)"));
+        log.info(encoder.encode("123qwe!"));
+        log.info(encoder.encode("123qwe@"));
+        log.info(encoder.encode("123qwe#"));
+        log.info(encoder.encode("123qwe$"));
+        User user = userRepository.findByEmail(userLoginReq.getEmail())
                 .orElseThrow(() -> ServiceException.USER_NOT_FOUND);
         // password 틀림
-        if (!encoder.matches(password, user.getPassword())) {
+        if (!encoder.matches(userLoginReq.getPassword(), user.getPassword())) {
             throw ServiceException.WRONG_EMAIL_OR_PASSWORD;
         }
 

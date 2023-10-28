@@ -1,4 +1,4 @@
-package com.joo.everyletter_back.common.exception;
+package com.joo.everyletter_back.common.enumeration;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

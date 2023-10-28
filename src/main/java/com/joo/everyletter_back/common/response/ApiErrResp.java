@@ -1,7 +1,7 @@
 package com.joo.everyletter_back.common.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.joo.everyletter_back.common.exception.ErrorCode;
+import com.joo.everyletter_back.common.enumeration.ErrorCode;
 import lombok.*;
 
 @Getter

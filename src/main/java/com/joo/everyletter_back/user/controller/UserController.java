@@ -6,13 +6,16 @@ import com.joo.everyletter_back.user.dto.UserLoginReq;
 import com.joo.everyletter_back.user.dto.UserLoginResp;
 import com.joo.everyletter_back.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -27,8 +30,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ApiSuccResp<UserLoginResp> login(@RequestBody UserLoginReq userLoginReq) {
-        UserLoginResp userLoginResp = userService.login(userLoginReq.getEmail(), userLoginReq.getPassword());
+    public ApiSuccResp<UserLoginResp> login(@RequestBody UserLoginReq userLoginReq, HttpServletResponse response) {
+        UserLoginResp userLoginResp = userService.login(userLoginReq);
+        response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer "+userLoginResp.getToken());
         return ApiSuccResp.from(userLoginResp);
     }
 

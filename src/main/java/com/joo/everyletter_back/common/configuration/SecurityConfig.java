@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,6 +29,7 @@ public class SecurityConfig {
 //        return http.build();
 //    }
 
+    private final AuthenticationProvider authenticationProvider;
     private final UserService userService;
     private final UserDetailsService userDetailsService;
     @Value("${jwt.token.secret}")
@@ -40,13 +42,17 @@ public class SecurityConfig {
                 .csrf().disable() // 크로스 사이트
                 .cors().and() // 크로스 사이트 도메인이 다를때 허용
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll() // login, join은 인증 없이 접근 가능
-                .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated() // 모든 POST 요청은 인증 필요
+                .antMatchers("/users/join", "/users/login").permitAll() // login, join은 인증 없이 접근 가능
+                .antMatchers("/api/**").hasAnyRole("ADMIN", "LETTER", "USER")
+                .antMatchers("/letter/**").hasAnyRole("ADMIN", "LETTER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/**").authenticated() // 모든 POST 요청은 인증 필요
                 .and()
+                .authenticationProvider(authenticationProvider)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(userService, secretKey, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

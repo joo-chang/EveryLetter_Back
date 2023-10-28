@@ -59,6 +59,7 @@ class UserControllerTest {
         String email = "jooc03@gmail.com";
         String password = "123qwe";
         String nickname = "창창";
+        UserJoinReq userJoinReq = new UserJoinReq(email, password, nickname);
 
         when(userService.join(any()))
                 .thenThrow(ServiceException.INTERNAL_SERVER_ERROR);
@@ -94,7 +95,7 @@ class UserControllerTest {
         String email = "jooc01@gmail.com";
         String password = "123qwe";
 
-        when(userService.login(any(), any()))
+        when(userService.login(any()))
                 .thenThrow(ServiceException.USER_NOT_FOUND);
 
         mockMvc.perform(post("/api/v1/users/login")
@@ -112,7 +113,7 @@ class UserControllerTest {
         String email = "jooc01@gmail.com";
         String password = "123qwe";
 
-        when(userService.login(any(), any()))
+        when(userService.login(any()))
                 .thenThrow(ServiceException.WRONG_EMAIL_OR_PASSWORD);
 
         mockMvc.perform(post("/api/v1/users/login")

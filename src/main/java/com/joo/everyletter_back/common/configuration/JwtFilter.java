@@ -6,8 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final UserService userService;
     private final String secretKey;
+    private final UserDetailsService userDetailsService;
     // 모든 요청을 막아놨는데 여기를 통해 권한을 부여해줄 수 있다.
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -49,13 +50,17 @@ public class JwtFilter extends OncePerRequestFilter {
         String email = JwtUtil.getEmail(token, secretKey);
         log.info("email : {}", email);
 
-        // 권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(email, null, List.of(new SimpleGrantedAuthority("USER"))); // DB에서 꺼내서 role을 지정하면 됨
-        // Detail을 넣어줌
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        // request에 인증 도장이 찍힘
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        filterChain.doFilter(request, response);
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            // 권한 부여
+            UsernamePasswordAuthenticationToken authenticationToken =
+    //                new UsernamePasswordAuthenticationToken(email, null, List.of(new SimpleGrantedAuthority("USER"))); // DB에서 꺼내서 role을 지정하면 됨
+                    new UsernamePasswordAuthenticationToken(email, null, userDetails.getAuthorities()); // DB에서 꺼내서 role을 지정하면 됨
+            // Detail을 넣어줌
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            // request에 인증 도장이 찍힘
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            filterChain.doFilter(request, response);
+        }
     }
 }

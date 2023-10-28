@@ -1,14 +1,19 @@
 package com.joo.everyletter_back.common.model.entity;
 
+import com.joo.everyletter_back.common.enumeration.Role;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "USER")
@@ -19,7 +24,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class User extends BaseTimeEntity{
+public class User extends BaseTimeEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +46,34 @@ public class User extends BaseTimeEntity{
     private Integer subLimit;
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> collectors = new ArrayList<>();
+        collectors.add(()->{return String.valueOf(getRole());}); // ROLE_USER
+        return collectors;
+    }
+    @Override
+    public String getUsername() {
+        return null;
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
