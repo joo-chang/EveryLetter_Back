@@ -19,6 +19,7 @@ public enum ErrorCode {
     FOLLOWING_SELF_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "FOLLOWING_SELF_NOT_ALLOWED", "자기 자신을 구독 하는 것은 불가능합니다."),
     CONTENT_LIMIT_EXCEED(HttpStatus.BAD_REQUEST,"CONTENT_LIMIT_EXCEED","1000자를 초과하여 입력할 수 없습니다."),
     USER_INFO_NOT_MATCH(HttpStatus.BAD_REQUEST,"USER_INFO_NOT_MATCH","작성자만 내용을 수정할 수 있습니다."),
+    WRONG_EMAIL_AUTHCODE(HttpStatus.BAD_REQUEST, "WRONG_EMAIL_AUTHCODE", "인증 번호가 일치하지 않습니다."),
 
     /* 401 */
     ACCESS_DENIED(HttpStatus.UNAUTHORIZED, "ACCESS_DENIED", "유효한 인증 정보가 아닙니다."),
@@ -38,7 +39,7 @@ public enum ErrorCode {
     /* 500 */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", "예상치 못한 서버 에러가 발생했습니다."),
     FAILED_FILE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "FAILED_FILE_UPLOAD", "파일 업로드에 실패했습니다."),
-    FAILED_SEND_EMAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FAILED_SEND_EMAIL", "메일 전송에 실패했습니다.")
+    FAILED_SEND_EMAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FAILED_SEND_EMAIL", "메일 전송에 실패했습니다."),
     ;
 
     private final HttpStatus httpStatus;

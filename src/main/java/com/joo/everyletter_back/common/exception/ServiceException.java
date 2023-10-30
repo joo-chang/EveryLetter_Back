@@ -29,6 +29,7 @@ public class ServiceException extends RuntimeException{
     public static final ServiceException FOLLOW_LIMIT_EXCEED = new ServiceException(ErrorCode.FOLLOW_LIMIT_EXCEED);
     public static final ServiceException FOLLOWING_SELF_NOT_ALLOWED = new ServiceException(ErrorCode.FOLLOWING_SELF_NOT_ALLOWED);
     public static final ServiceException ALREADY_EXIST_USER = new ServiceException(ErrorCode.ALREADY_EXIST_USER);
+    public static final ServiceException WRONG_EMAIL_AUTHCODE = new ServiceException(ErrorCode.WRONG_EMAIL_AUTHCODE);
 
     private final ErrorCode errorCode;
 

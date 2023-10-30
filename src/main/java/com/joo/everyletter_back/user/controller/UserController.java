@@ -1,10 +1,7 @@
 package com.joo.everyletter_back.user.controller;
 
 import com.joo.everyletter_back.common.response.ApiSuccResp;
-import com.joo.everyletter_back.user.dto.UserEmailSendReq;
-import com.joo.everyletter_back.user.dto.UserJoinReq;
-import com.joo.everyletter_back.user.dto.UserLoginReq;
-import com.joo.everyletter_back.user.dto.UserLoginResp;
+import com.joo.everyletter_back.user.dto.*;
 import com.joo.everyletter_back.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -24,16 +21,26 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/join/emailsend")
+    @PostMapping("/join/email/send")
     public ApiSuccResp<?> emailSend(@RequestBody UserEmailSendReq userEmailSendReq) throws IOException, MessagingException {
         userService.emailSend(userEmailSendReq);
         return ApiSuccResp.NO_DATA_RESPONSE;
     }
+    @PostMapping("/join/email/auth")
+    public ApiSuccResp<?> emailAuth(@RequestBody UserEmailAuthReq userEmailAuthReq) {
+        userService.emailAuth(userEmailAuthReq);
+        return ApiSuccResp.NO_DATA_RESPONSE;
+    }
+
+    @PostMapping("/join/nickname/check")
+    public ApiSuccResp<?> nicknameCheck(@RequestBody UserNicknameCheckReq userNicknameCheckReq ) {
+        userService.nicknameCheck(userNicknameCheckReq.getNickname());
+        return ApiSuccResp.NO_DATA_RESPONSE;
+    }
+
     @PostMapping("/join")
     public ApiSuccResp<?> join(@RequestBody UserJoinReq userJoinReq) {
-
         userService.join(userJoinReq);
-
         return ApiSuccResp.NO_DATA_RESPONSE;
     }
 

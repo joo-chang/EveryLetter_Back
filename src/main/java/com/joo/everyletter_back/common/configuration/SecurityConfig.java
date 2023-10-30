@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .csrf().disable() // 크로스 사이트
                 .cors().and() // 크로스 사이트 도메인이 다를때 허용
                 .authorizeRequests()
-                .antMatchers("/users/join", "/users/login", "/users/join/emailsend").permitAll() // login, join은 인증 없이 접근 가능
+                .antMatchers("/users/join/**", "/users/login").permitAll() // login, join은 인증 없이 접근 가능
                 .antMatchers("/api/**").hasAnyRole("ADMIN", "LETTER", "USER")
                 .antMatchers("/letter/**").hasAnyRole("ADMIN", "LETTER")
                 .antMatchers("/admin/**").hasRole("ADMIN")

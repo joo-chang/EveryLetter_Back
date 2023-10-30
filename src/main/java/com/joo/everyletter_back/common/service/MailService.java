@@ -32,6 +32,7 @@ public class MailService {
         MimeMessage emailForm = createEmailForm(toEmail, title, text);
         try {
             emailSender.send(emailForm);
+            log.info("이메일 전송 완료 - {}", toEmail);
         } catch (RuntimeException e) {
             log.error(e.toString());
             log.debug("MailService.sendEmail exception occur toEmail: {}, " +
