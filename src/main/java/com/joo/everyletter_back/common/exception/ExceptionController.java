@@ -24,6 +24,7 @@ public class ExceptionController {
      */
     @ExceptionHandler(ServiceException.class)
     protected ResponseEntity<ApiErrResp> handleBaseException(ServiceException e) {
+        log.error(e.getErrorCode().toString());
         return ResponseEntity
                 .status(e.getHttpStatus())
                 .body(ApiErrResp.from(e.getErrorCode()));

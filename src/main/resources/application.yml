@@ -50,9 +50,9 @@ spring:
 jwt:
   token:
     secret: "secretKey"
-    expiration: 1800000
+    expiration: 60000
     refresh-token:
-      expiration: 8640000
+      expiration: 604800000
 
 # 로그 레벨
 logging:

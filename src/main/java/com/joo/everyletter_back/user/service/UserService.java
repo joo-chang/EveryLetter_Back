@@ -118,7 +118,7 @@ public class UserService {
     public UserLoginResp login(UserLoginReq userLoginReq) {
         // email 없음
         User user = userRepository.findByEmail(userLoginReq.getEmail())
-                .orElseThrow(() -> ServiceException.USER_NOT_FOUND);
+                .orElseThrow(() -> ServiceException.WRONG_EMAIL_OR_PASSWORD);
         // password 틀림
         if (!encoder.matches(userLoginReq.getPassword(), user.getPassword())) {
             throw ServiceException.WRONG_EMAIL_OR_PASSWORD;
