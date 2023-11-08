@@ -18,6 +18,8 @@ public class ServiceException extends RuntimeException{
     public static final ServiceException WRONG_EMAIL_OR_PASSWORD = new ServiceException(ErrorCode.WRONG_EMAIL_OR_PASSWORD);
     public static final ServiceException WRONG_BEFORE_PASSWORD = new ServiceException(ErrorCode.WRONG_BEFORE_PASSWORD);
     public static final ServiceException NOT_EXPIRED_ACCESS_TOKEN = new ServiceException(ErrorCode.NOT_EXPIRED_ACCESS_TOKEN);
+    public static final ServiceException EXPIRED_ACCESS_TOKEN = new ServiceException(ErrorCode.EXPIRED_ACCESS_TOKEN);
+    public static final ServiceException EXPIRED_REFRESH_TOKEN = new ServiceException(ErrorCode.EXPIRED_REFRESH_TOKEN);
     public static final ServiceException INVALID_TOKEN = new ServiceException(ErrorCode.INVALID_TOKEN);
     public static final ServiceException FORBIDDEN = new ServiceException(ErrorCode.FORBIDDEN);
     public static final ServiceException EXPIRED_OR_PREVIOUS_REFRESH_TOKEN = new ServiceException(ErrorCode.EXPIRED_OR_PREVIOUS_REFRESH_TOKEN);

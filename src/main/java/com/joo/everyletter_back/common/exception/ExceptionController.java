@@ -55,6 +55,7 @@ public class ExceptionController {
     @ExceptionHandler(RuntimeException.class)
     protected ApiErrResp handleRuntimeException(RuntimeException e) {
         log.error(e.getMessage());
+        log.error(e.toString());
         return ApiErrResp.from(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 

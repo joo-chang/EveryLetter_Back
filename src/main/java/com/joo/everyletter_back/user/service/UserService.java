@@ -1,6 +1,5 @@
 package com.joo.everyletter_back.user.service;
 
-import com.joo.everyletter_back.common.enumeration.Role;
 import com.joo.everyletter_back.common.exception.ServiceException;
 import com.joo.everyletter_back.common.model.entity.EmailAuth;
 import com.joo.everyletter_back.common.model.entity.User;
@@ -8,11 +7,10 @@ import com.joo.everyletter_back.common.model.repository.EmailAuthRepository;
 import com.joo.everyletter_back.common.model.repository.UserRepository;
 import com.joo.everyletter_back.common.service.MailService;
 import com.joo.everyletter_back.common.util.CommonUtil;
-import com.joo.everyletter_back.common.util.JwtUtil;
-import com.joo.everyletter_back.user.dto.*;
+import com.joo.everyletter_back.user.dto.UserEmailAuthReq;
+import com.joo.everyletter_back.user.dto.UserEmailSendReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +23,11 @@ import java.util.Optional;
 @Slf4j
 public class UserService {
 
-    private final BCryptPasswordEncoder encoder;
 
     private final UserRepository userRepository;
     private final MailService mailService;
     private final EmailAuthRepository emailAuthRepository;
 
-
-    @Value("${jwt.token.secret}")
-    private String key;
-    @Value("${jwt.token.expiration}")
-    private Long expireTimeMs;
 
     public void emailSend(UserEmailSendReq userEmailSendReq) throws IOException, MessagingException {
         Optional<User> user = userRepository.findByEmail(userEmailSendReq.getEmail());
@@ -86,49 +78,6 @@ public class UserService {
 
     }
 
-    public void nicknameCheck(String nickname) {
-        if (userRepository.existsByNickname(nickname)) {
-            throw ServiceException.ALREADY_EXIST_NICKNAME;
-        }
-    }
-
-    public void join(UserJoinReq userJoinReq) {
-
-        EmailAuth emailAuth = emailAuthRepository.findByEmail(userJoinReq.getEmail());
-
-        if (emailAuth == null || !emailAuth.isAuthYn()) {
-            throw ServiceException.NOT_AUTHENTICATION_YET;
-        }
-
-        // 닉네임 중복 재확인
-        nicknameCheck(userJoinReq.getNickname());
-
-        // 저장
-        User user = User.builder()
-                .email(userJoinReq.getEmail())
-                .password(encoder.encode(userJoinReq.getPassword()))
-                .nickname(userJoinReq.getNickname())
-                .role(Role.ROLE_USER)
-                .build();
-        userRepository.save(user);
-        emailAuthRepository.delete(emailAuth);
-
-    }
-
-    public UserLoginResp login(UserLoginReq userLoginReq) {
-        // email 없음
-        User user = userRepository.findByEmail(userLoginReq.getEmail())
-                .orElseThrow(() -> ServiceException.WRONG_EMAIL_OR_PASSWORD);
-        // password 틀림
-        if (!encoder.matches(userLoginReq.getPassword(), user.getPassword())) {
-            throw ServiceException.WRONG_EMAIL_OR_PASSWORD;
-        }
-
-        String token = JwtUtil.createJwt(user.getEmail(), key, expireTimeMs);
-        return UserLoginResp.builder()
-                .token(token)
-                .build();
-    }
 
 
 }
