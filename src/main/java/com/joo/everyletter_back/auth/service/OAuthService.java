@@ -4,6 +4,7 @@ import com.joo.everyletter_back.auth.dto.TokenDto;
 import com.joo.everyletter_back.auth.oauth.OauthMember;
 import com.joo.everyletter_back.auth.oauth.OauthParams;
 import com.joo.everyletter_back.common.enumeration.Role;
+import com.joo.everyletter_back.common.exception.ServiceException;
 import com.joo.everyletter_back.common.jwt.TokenProvider;
 import com.joo.everyletter_back.common.model.entity.RefreshToken;
 import com.joo.everyletter_back.common.model.entity.User;
@@ -38,28 +39,30 @@ public class OAuthService {
         OauthMember oauthMember = requestOauthInfoService.request(oauthParams);
         log.debug("전달받은 유저정보:: " + oauthMember.getEmail());
 
-        // 획득한 회원정보로 검증할 MemberDTO 생성
-
         // 획득된 회원정보 DB 조회
         Optional<User> user = userRepository.findByEmail(oauthMember.getEmail());
-
-        // 반환할 JWT
-        String accessJwt = null;
 
         if (user.isEmpty()) {
             log.debug("------ 회원가입 필요한 회원 ------");
             // 회원가입이 되지 않은 회원이기 때문에 회원 DTO에 값을 전달하여 DB저장
             log.debug("회원가입 요청 :: " + oauthMember.getEmail());
 
+            User topUser = userRepository.findTopByOrderByCreatedDateDesc();
+
             // kakaoMember에서 전달된 데이터를 가진 memberDTO DB 저장
             userRepository.save(User.builder()
                             .email(oauthMember.getEmail())
+                            .nickname("익명" + String.format("%05d", topUser.getId() + 1))
                             .password(passwordEncoder.encode(oauthParams.oauthProvider().toString()))
                             .role(Role.ROLE_USER)
+                            .oauthProvider(oauthParams.oauthProvider())
                             .build());
 
             log.debug("회원가입 완료 :: " + oauthMember.getEmail());
+        } else if (user.get().getOauthProvider() != oauthParams.oauthProvider()) {
+            throw ServiceException.ALREADY_EXIST_USER;
         }
+
         // 이미 가입된 회원은 토큰발급
         log.debug("------ JWT 발급 ------");
 

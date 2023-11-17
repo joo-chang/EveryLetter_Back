@@ -56,6 +56,11 @@ public class AuthService {
 
         User user = userRepository.findByEmail(userAuthReq.getEmail())
                 .orElseThrow(() -> ServiceException.WRONG_EMAIL_OR_PASSWORD);
+
+        // OAuth 로그인 사용자
+        if(user.getOauthProvider() != null){
+            throw ServiceException.OAUTH_LOGIN_USER;
+        }
         // password 틀림
         if (!passwordEncoder.matches(userAuthReq.getPassword(), user.getPassword())) {
             throw ServiceException.WRONG_EMAIL_OR_PASSWORD;
@@ -63,12 +68,11 @@ public class AuthService {
 
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = userAuthReq.toAuthentication();
-
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        // 3. 인증 정보를 기반으로 JWT 토큰 생성
+        // 3. 인증 정보를 기반으로 JWT 토큰 생성퓨
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
         // 4. RefreshToken 저장

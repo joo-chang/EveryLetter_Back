@@ -1,5 +1,6 @@
 package com.joo.everyletter_back.common.model.entity;
 
+import com.joo.everyletter_back.auth.oauth.OauthProvider;
 import com.joo.everyletter_back.common.enumeration.Role;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -34,6 +35,9 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private OauthProvider oauthProvider;
 
     @ColumnDefault("5")
     private Integer subLimit;
