@@ -116,7 +116,7 @@ public class SecurityConfig {
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/users/join/**", "/users/login").permitAll() // login, join은 인증 없이 접근 가능
                 .antMatchers("/api/**").hasAnyRole("ADMIN", "LETTER", "USER")
-                .antMatchers("/bbs/**").hasAnyRole("ADMIN", "LETTER", "USER")
+                .antMatchers("/post/**").hasAnyRole("ADMIN", "LETTER", "USER")
                 .antMatchers("/chat/**").hasAnyRole("ADMIN", "LETTER", "USER")
                 .antMatchers("/letter/**").hasAnyRole("ADMIN", "LETTER")
                 .antMatchers("/admin/**").hasRole("ADMIN")

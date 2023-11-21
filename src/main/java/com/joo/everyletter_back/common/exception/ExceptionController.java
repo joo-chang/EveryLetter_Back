@@ -54,8 +54,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     protected ApiErrResp handleRuntimeException(RuntimeException e) {
-        log.error(e.getMessage());
-        log.error(e.toString());
+        log.error(e.getStackTrace().toString());
         return ApiErrResp.from(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 

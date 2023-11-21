@@ -10,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "USER")
@@ -41,6 +42,9 @@ public class User extends BaseTimeEntity {
 
     @ColumnDefault("5")
     private Integer subLimit;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts;
 
 }
 

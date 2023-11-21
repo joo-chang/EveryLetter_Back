@@ -57,7 +57,7 @@ jwt:
 # 로그 레벨
 logging:
   level:
-    root: debug
+    root: INFO
 #server:
 #  port: 8080
 #  servlet:

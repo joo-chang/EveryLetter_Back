@@ -33,6 +33,8 @@ public class ServiceException extends RuntimeException{
     public static final ServiceException ALREADY_EXIST_USER = new ServiceException(ErrorCode.ALREADY_EXIST_USER);
     public static final ServiceException WRONG_EMAIL_AUTHCODE = new ServiceException(ErrorCode.WRONG_EMAIL_AUTHCODE);
     public static final ServiceException OAUTH_LOGIN_USER = new ServiceException(ErrorCode.OAUTH_LOGIN_USER);
+    public static final ServiceException CATEGORY_NOT_FOUND = new ServiceException(ErrorCode.CATEGORY_NOT_FOUND);
+    public static final ServiceException POST_NOT_FOUND = new ServiceException(ErrorCode.POST_NOT_FOUND);
 
     private final ErrorCode errorCode;
 

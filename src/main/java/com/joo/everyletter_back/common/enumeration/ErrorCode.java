@@ -35,15 +35,17 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_NOT_FOUND", "존재하지 않는 유저입니다."),
     FEED_NOT_FOUND(HttpStatus.NOT_FOUND, "FEED_NOT_FOUND", "존재하지 않는 게시물입니다."),
     REPLY_NOT_FOUND(HttpStatus.BAD_REQUEST, "REPLY_NOT_FOUND", "존재하지 않는 댓글입니다."),
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "CATEGORY_NOT_FOUND", "존재하지 않는 카테고리입니다."),
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST_NOT_FOUND", "존재하지 않는 게시글입니다."),
 
     /* 409 */
     ALREADY_EXIST_EMAIL(HttpStatus.CONFLICT, "ALREADY_EXIST_EMAIL", "이미 가입된 이메일입니다."),
     ALREADY_EXIST_USER(HttpStatus.CONFLICT, "ALREADY_EXIST_USER", "이미 가입한 회원입니다." ),
+
     /* 500 */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", "예상치 못한 서버 에러가 발생했습니다."),
     FAILED_FILE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "FAILED_FILE_UPLOAD", "파일 업로드에 실패했습니다."),
-    FAILED_SEND_EMAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FAILED_SEND_EMAIL", "메일 전송에 실패했습니다."),
-    ;
+    FAILED_SEND_EMAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FAILED_SEND_EMAIL", "메일 전송에 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
