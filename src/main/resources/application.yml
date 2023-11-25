@@ -50,9 +50,6 @@ spring:
 jwt:
   token:
     secret: "c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK"
-    expiration: 6000000
-    refresh-token:
-      expiration: 604800000
 
 # 로그 레벨
 logging:
@@ -71,6 +68,7 @@ logging:
 #    me.silvernine: DEBUG
 
 
+# OAuth 인증 정보(KAKAO, NAVER)
 kakao:
   auth:
     token:
@@ -90,3 +88,6 @@ naver:
   client:
     id: yWhVB03BSZwawsN3tdUt
     secret: 87okcZ3PT2
+
+upload:
+  path: /

@@ -1,5 +1,6 @@
 package com.joo.everyletter_back.common.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.joo.everyletter_back.auth.oauth.OauthProvider;
 import com.joo.everyletter_back.common.enumeration.Role;
 import lombok.*;
@@ -30,11 +31,15 @@ public class User extends BaseTimeEntity {
     @NotBlank(message = "이메일은 필수 입력값입니다.")
     @Email
     private String email;
+
+    // 객체 응답 시 제거돼서 나감
+    @JsonIgnore
     private String password;
 
     private String nickname;
 
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Role role;
 
     @Enumerated(EnumType.STRING)

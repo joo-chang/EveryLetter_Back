@@ -3,3 +3,4 @@ INSERT INTO USER(`email`, `password`, `nickname`, `role`, createdDate, modifiedD
 INSERT INTO USER(`email`, `password`, `nickname`, `role`, createdDate, modifiedDate) values ('jooc02@gmail.com', '{bcrypt}$2a$10$0ELRTFHBSGS0ECkdMmyAauMQCp7Tzp29qOtzOFxCrPt9yVQXwy7AO', '창2', 'ROLE_USER', now(3), now(3));
 INSERT INTO USER(`email`, `password`, `nickname`, `role`, createdDate, modifiedDate) values ('jooc0311@gmail.com', '{bcrypt}$2a$10$0ELRTFHBSGS0ECkdMmyAauMQCp7Tzp29qOtzOFxCrPt9yVQXwy7AO', '창gmail', 'ROLE_USER', now(3), now(3));
 INSERT INTO CATEGORY(`name`) value ('IT');
+INSERT INTO CATEGORY(`name`) value ('수다');
