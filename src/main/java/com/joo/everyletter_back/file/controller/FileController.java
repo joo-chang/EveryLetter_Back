@@ -18,6 +18,6 @@ public class FileController {
 
    @PostMapping("/upload")
    public ApiSuccResp<String> uploadFile(@RequestParam("file") MultipartFile file) {
-       return ApiSuccResp.from(fileService.fileupload(file));
+       return ApiSuccResp.from(fileService.fileUpload(file));
    }
 }
