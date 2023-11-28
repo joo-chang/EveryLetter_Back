@@ -22,6 +22,8 @@ public class Category {
 
     private String name;
 
+    private String content;
+
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Post> posts;
