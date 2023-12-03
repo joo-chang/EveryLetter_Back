@@ -114,7 +114,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/v3/api-docs", "/swagger-resources/**","/swagger-ui.html", "/webjars/**", "/swagger-ui/**").permitAll()
-                .antMatchers("/auth/**", "/users/join/**", "/users/login").permitAll() // login, join은 인증 없이 접근 가능
+                .antMatchers("/auth/**", "/users/join/**", "/users/login", "/file/upload").permitAll() // login, join은 인증 없이 접근 가능
                 .antMatchers("/api/**").hasAnyRole("ADMIN", "LETTER", "USER")
                 .antMatchers("/post/**").hasAnyRole("ADMIN", "LETTER", "USER")
                 .antMatchers("/chat/**").hasAnyRole("ADMIN", "LETTER", "USER")
