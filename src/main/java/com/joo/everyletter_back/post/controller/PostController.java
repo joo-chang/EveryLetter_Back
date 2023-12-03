@@ -1,11 +1,9 @@
 package com.joo.everyletter_back.post.controller;
 
 import com.joo.everyletter_back.common.model.entity.Category;
+import com.joo.everyletter_back.common.model.entity.Reply;
 import com.joo.everyletter_back.common.response.ApiSuccResp;
-import com.joo.everyletter_back.post.dto.CategoryListResp;
-import com.joo.everyletter_back.post.dto.PostListResp;
-import com.joo.everyletter_back.post.dto.PostWriteReq;
-import com.joo.everyletter_back.post.dto.PostWriteResp;
+import com.joo.everyletter_back.post.dto.*;
 import com.joo.everyletter_back.post.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,14 +35,26 @@ public class PostController {
     }
 
     @Operation(summary = "게시판 글 리스트 조회", description = "게시판 글 조회 API 입니다. (카테고리가 0일 시 전체 조회)")
-    @GetMapping("/list/{id}")
-    public ApiSuccResp<PostListResp> categoryList(@PathVariable Long id, Pageable pageable) {
-        return ApiSuccResp.from(postService.postList(id, pageable));
+    @GetMapping("/list/{categoryId}")
+    public ApiSuccResp<PostListResp> categoryList(@PathVariable Long categoryId, Pageable pageable) {
+        return ApiSuccResp.from(postService.postList(categoryId, pageable));
     }
 
     @Operation(summary = "카테고리 정보 조회", description = "게시판 카테고리 소개를 보여주는 API 입니다.")
-    @GetMapping("category/{id}")
-    public ApiSuccResp<Category> categoryInfo(@PathVariable Long id){
-        return ApiSuccResp.from(postService.categoryInfo(id));
+    @GetMapping("/category/{categoryId}")
+    public ApiSuccResp<Category> categoryInfo(@PathVariable Long categoryId){
+        return ApiSuccResp.from(postService.categoryInfo(categoryId));
+    }
+
+    @Operation(summary = "게시글 상세 정보 조회", description = "게시판에서 게시글 클릭 시 이동하는 페이지 입니다.")
+    @GetMapping("/detail/{postId}")
+    public ApiSuccResp<PostDto> postDetail(@PathVariable Long postId) {
+        return ApiSuccResp.from(postService.postDetail(postId));
+    }
+
+    @Operation(summary = "게시글 댓글 작성")
+    @PostMapping("/reply/write/{postId}")
+    public ApiSuccResp<Reply> replyWrite(@PathVariable Long postId, ReplyWriteReq replyWriteReq) {
+        return ApiSuccResp.from(postService.replyWrite(postId, replyWriteReq));
     }
 }

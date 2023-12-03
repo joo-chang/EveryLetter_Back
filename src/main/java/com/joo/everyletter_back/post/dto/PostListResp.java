@@ -9,5 +9,5 @@ import org.springframework.data.domain.Slice;
 @Builder
 @AllArgsConstructor
 public class PostListResp {
-    private Slice<PostDto> postList;
+    private Slice<PostListDto> postList;
 }

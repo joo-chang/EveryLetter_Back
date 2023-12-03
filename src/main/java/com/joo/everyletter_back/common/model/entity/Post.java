@@ -1,16 +1,16 @@
 package com.joo.everyletter_back.common.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "POST")
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,9 +29,15 @@ public class Post extends BaseTimeEntity{
     @JoinColumn(name = "categoryId")
     private Category category;
 
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OrderBy("id asc")
+    private List<Reply> replies;
+
     private String title;
+    @Column(columnDefinition = "longtext")
     private String content;
 
+    @ColumnDefault("0")
     private int viewCnt;
 
 }

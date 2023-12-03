@@ -38,6 +38,8 @@ public class User extends BaseTimeEntity {
 
     private String nickname;
 
+    private String profileUrl;
+
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     private Role role;
@@ -48,8 +50,12 @@ public class User extends BaseTimeEntity {
     @ColumnDefault("5")
     private Integer subLimit;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Post> posts;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OrderBy("id asc")
+    private List<Reply> replies;
 
 }
 

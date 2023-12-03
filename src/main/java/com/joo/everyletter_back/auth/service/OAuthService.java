@@ -43,9 +43,9 @@ public class OAuthService {
         Optional<User> user = userRepository.findByEmail(oauthMember.getEmail());
 
         if (user.isEmpty()) {
-            log.debug("------ 회원가입 필요한 회원 ------");
+            log.info("------ 회원가입 필요한 회원 ------");
             // 회원가입이 되지 않은 회원이기 때문에 회원 DTO에 값을 전달하여 DB저장
-            log.debug("회원가입 요청 :: " + oauthMember.getEmail());
+            log.info("회원가입 요청 :: " + oauthMember.getEmail());
 
             User topUser = userRepository.findTopByOrderByCreatedDateDesc();
 

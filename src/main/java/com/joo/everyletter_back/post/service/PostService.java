@@ -3,9 +3,11 @@ package com.joo.everyletter_back.post.service;
 import com.joo.everyletter_back.common.exception.ServiceException;
 import com.joo.everyletter_back.common.model.entity.Category;
 import com.joo.everyletter_back.common.model.entity.Post;
+import com.joo.everyletter_back.common.model.entity.Reply;
 import com.joo.everyletter_back.common.model.entity.User;
 import com.joo.everyletter_back.common.model.repository.CategoryRepository;
 import com.joo.everyletter_back.common.model.repository.PostRepostiory;
+import com.joo.everyletter_back.common.model.repository.ReplyRepository;
 import com.joo.everyletter_back.common.model.repository.UserRepository;
 import com.joo.everyletter_back.post.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class PostService {
     private final PostRepostiory postRepostiory;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final ReplyRepository replyRepository;
 
     public PostWriteResp postWrite(PostWriteReq postWriteReq) {
 
@@ -50,16 +54,17 @@ public class PostService {
         }else {
             posts = postRepostiory.findByCategoryId(categoryId, pageable);
         }
-        List<PostDto> postDtos = posts.getContent().stream()
-                .map(post -> PostDto.builder()
+        List<PostListDto> postListDtos = posts.getContent().stream()
+                .map(post -> PostListDto.builder()
                         .id(post.getId())
-                        .careatedDate(post.getCreatedDate())
+                        .createdDate(post.getCreatedDate())
                         .title(post.getTitle())
                         .viewCnt(post.getViewCnt())
+                        .profileUrl(post.getUser().getProfileUrl())
                         .nickname(post.getUser().getNickname())
                         .build()
                 ).toList();
-        return new PostListResp(new SliceImpl<>(postDtos, pageable, posts.hasNext()));
+        return new PostListResp(new SliceImpl<>(postListDtos, pageable, posts.hasNext()));
     }
 
     public CategoryListResp cateList() {
@@ -74,5 +79,35 @@ public class PostService {
                     .build();
         }
         return categoryRepository.findById(categoryId).orElseThrow(() ->ServiceException.CATEGORY_NOT_FOUND);
+    }
+
+    @Transactional
+    public PostDto postDetail(Long postId) {
+        Post post = postRepostiory.findById(postId).orElseThrow(() -> ServiceException.POST_NOT_FOUND);
+        PostDto postDto = PostDto.builder()
+                .id(post.getId())
+                .nickname(post.getUser().getNickname())
+                .profileUrl(post.getUser().getProfileUrl())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .viewCnt(post.getViewCnt())
+                .createdDate(post.getCreatedDate())
+                .build();
+
+        post.setViewCnt(post.getViewCnt() + 1);
+        return postDto;
+    }
+
+    public Reply replyWrite(Long postId, ReplyWriteReq replyWriteReq) {
+        Post post = postRepostiory.findById(postId).orElseThrow(() -> ServiceException.POST_NOT_FOUND);
+        User user = userRepository.findById(replyWriteReq.getUserId()).orElseThrow(() -> ServiceException.USER_NOT_FOUND);
+
+        Reply reply = Reply.builder()
+                .post(post)
+                .user(user)
+                .content(replyWriteReq.getContent())
+                .build();
+
+        return replyRepository.save(reply);
     }
 }
