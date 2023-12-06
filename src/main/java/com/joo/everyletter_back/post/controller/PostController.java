@@ -1,7 +1,6 @@
 package com.joo.everyletter_back.post.controller;
 
 import com.joo.everyletter_back.common.model.entity.Category;
-import com.joo.everyletter_back.common.model.entity.Reply;
 import com.joo.everyletter_back.common.response.ApiSuccResp;
 import com.joo.everyletter_back.post.dto.*;
 import com.joo.everyletter_back.post.service.PostService;
@@ -48,13 +47,14 @@ public class PostController {
 
     @Operation(summary = "게시글 상세 정보 조회", description = "게시판에서 게시글 클릭 시 이동하는 페이지 입니다.")
     @GetMapping("/detail/{postId}")
-    public ApiSuccResp<PostDto> postDetail(@PathVariable Long postId) {
+    public ApiSuccResp<PostDetailResp> postDetail(@PathVariable Long postId) {
         return ApiSuccResp.from(postService.postDetail(postId));
     }
 
     @Operation(summary = "게시글 댓글 작성")
     @PostMapping("/reply/write/{postId}")
-    public ApiSuccResp<Reply> replyWrite(@PathVariable Long postId, ReplyWriteReq replyWriteReq) {
-        return ApiSuccResp.from(postService.replyWrite(postId, replyWriteReq));
+    public ApiSuccResp<?> replyWrite(@PathVariable Long postId, @RequestBody ReplyWriteReq replyWriteReq) {
+        postService.replyWrite(postId, replyWriteReq);
+        return ApiSuccResp.NO_DATA_RESPONSE;
     }
 }

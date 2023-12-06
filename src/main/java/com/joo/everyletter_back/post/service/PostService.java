@@ -82,7 +82,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto postDetail(Long postId) {
+    public PostDetailResp postDetail(Long postId) {
         Post post = postRepostiory.findById(postId).orElseThrow(() -> ServiceException.POST_NOT_FOUND);
         PostDto postDto = PostDto.builder()
                 .id(post.getId())
@@ -95,10 +95,19 @@ public class PostService {
                 .build();
 
         post.setViewCnt(post.getViewCnt() + 1);
-        return postDto;
+        List<Reply> replyList = replyRepository.findByPost(post);
+        List<ReplyDto> replyDtos = replyList.stream()
+                .map(reply -> ReplyDto.builder()
+                        .replyId(reply.getId())
+                        .content(reply.getContent())
+                        .nickname(reply.getUser().getNickname())
+                        .createdDate(reply.getCreatedDate())
+                        .build()
+                ).toList();
+        return new PostDetailResp(postDto, replyDtos);
     }
 
-    public Reply replyWrite(Long postId, ReplyWriteReq replyWriteReq) {
+    public void replyWrite(Long postId, ReplyWriteReq replyWriteReq) {
         Post post = postRepostiory.findById(postId).orElseThrow(() -> ServiceException.POST_NOT_FOUND);
         User user = userRepository.findById(replyWriteReq.getUserId()).orElseThrow(() -> ServiceException.USER_NOT_FOUND);
 
@@ -107,7 +116,6 @@ public class PostService {
                 .user(user)
                 .content(replyWriteReq.getContent())
                 .build();
-
-        return replyRepository.save(reply);
+        replyRepository.save(reply);
     }
 }
