@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,18 +51,14 @@ public class User extends BaseTimeEntity {
     @ColumnDefault("5")
     private Integer subLimit;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Post> posts;
+    // Collection은 필드에서 초기화 하는 것이 안전하다. new ArrayList<>();
+    // Nullpointer Exception에 안전
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
-    private List<Reply> replies;
+    private List<Reply> replies = new ArrayList<>();
 
 }
-
-    //    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Collection<GrantedAuthority> collectors = new ArrayList<>();
-//        collectors.add(()->{return String.valueOf(getRole());}); // ROLE_USER
-//        return collectors;
-//    }

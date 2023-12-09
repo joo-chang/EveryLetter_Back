@@ -1,6 +1,5 @@
 package com.joo.everyletter_back.post.controller;
 
-import com.joo.everyletter_back.common.model.entity.Category;
 import com.joo.everyletter_back.common.response.ApiSuccResp;
 import com.joo.everyletter_back.post.dto.*;
 import com.joo.everyletter_back.post.service.PostService;
@@ -41,7 +40,7 @@ public class PostController {
 
     @Operation(summary = "카테고리 정보 조회", description = "게시판 카테고리 소개를 보여주는 API 입니다.")
     @GetMapping("/category/{categoryId}")
-    public ApiSuccResp<Category> categoryInfo(@PathVariable Long categoryId){
+    public ApiSuccResp<CategoryDto> categoryInfo(@PathVariable Long categoryId){
         return ApiSuccResp.from(postService.categoryInfo(categoryId));
     }
 

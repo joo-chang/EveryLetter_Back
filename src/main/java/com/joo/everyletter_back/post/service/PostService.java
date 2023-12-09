@@ -71,14 +71,21 @@ public class PostService {
         return new CategoryListResp(categoryRepository.findAll());
     }
 
-    public Category categoryInfo(Long categoryId){
+    public CategoryDto categoryInfo(Long categoryId){
+
         if(categoryId == 0){
-            return Category.builder()
+            return CategoryDto.builder()
                     .name("커뮤니티")
                     .content("다양한 사람들과 정보를 공유하고, 뉴스레터를 신청해보세요.")
                     .build();
         }
-        return categoryRepository.findById(categoryId).orElseThrow(() ->ServiceException.CATEGORY_NOT_FOUND);
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->ServiceException.CATEGORY_NOT_FOUND);
+
+        return CategoryDto.builder()
+                .id(category.getId())
+                .content(category.getContent())
+                .name(category.getName())
+                .build();
     }
 
     @Transactional
