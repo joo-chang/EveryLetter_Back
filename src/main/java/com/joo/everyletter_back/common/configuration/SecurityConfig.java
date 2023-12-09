@@ -113,9 +113,9 @@ public class SecurityConfig {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
-                .antMatchers("/v3/api-docs", "/swagger-resources/**","/swagger-ui.html", "/webjars/**", "/swagger-ui/**").permitAll()
+                .antMatchers("/v3/api-docs", "/swagger-resources/**","/swagger-ui.html", "/webjars/**", "/swagger-ui/**", "/ws/**").permitAll()
                 .antMatchers("/auth/**", "/users/join/**", "/users/login", "/file/upload").permitAll() // login, join은 인증 없이 접근 가능
-                .antMatchers("/api/**").hasAnyRole("ADMIN", "LETTER", "USER")
+//                .antMatchers("/ws/**").hasAnyRole("ADMIN", "LETTER", "USER")
                 .antMatchers("/post/**").hasAnyRole("ADMIN", "LETTER", "USER")
                 .antMatchers("/chat/**").hasAnyRole("ADMIN", "LETTER", "USER")
                 .antMatchers("/letter/**").hasAnyRole("ADMIN", "LETTER")
