@@ -68,7 +68,15 @@ public class PostService {
     }
 
     public CategoryListResp cateList() {
-        return new CategoryListResp(categoryRepository.findAll());
+        List<Category> categories = categoryRepository.findAll();
+        List<CategoryDto> categoryDtos = categories.stream()
+                .map(m -> CategoryDto.builder()
+                        .id(m.getId())
+                        .name(m.getName())
+                        .content(m.getContent())
+                        .build()
+                ).toList();
+        return new CategoryListResp(categoryDtos);
     }
 
     public CategoryDto categoryInfo(Long categoryId){

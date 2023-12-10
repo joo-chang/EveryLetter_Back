@@ -1,6 +1,5 @@
 package com.joo.everyletter_back.post.dto;
 
-import com.joo.everyletter_back.common.model.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,5 +12,5 @@ import java.util.List;
 @ToString
 @Getter
 public class CategoryListResp {
-    List<Category> categoryList;
+    List<CategoryDto> categoryList;
 }
