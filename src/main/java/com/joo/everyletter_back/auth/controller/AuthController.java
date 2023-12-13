@@ -57,6 +57,7 @@ public class AuthController {
     }
 
 
+
     @PostMapping("/oauth/kakao")
     public ApiSuccResp<TokenDto> handleKakaoLogin(@RequestBody KakaoParams kakaoParams, HttpServletResponse response){
         log.debug("넘겨받은 Kakao 인증키 :: " + kakaoParams.getAuthorizationCode());
