@@ -1,9 +1,6 @@
 package com.joo.everyletter_back.auth.controller;
 
-import com.joo.everyletter_back.auth.dto.TokenDto;
-import com.joo.everyletter_back.auth.dto.TokenRequestDto;
-import com.joo.everyletter_back.auth.dto.UserAuthReq;
-import com.joo.everyletter_back.auth.dto.UserAuthResp;
+import com.joo.everyletter_back.auth.dto.*;
 import com.joo.everyletter_back.auth.oauth.kakao.KakaoParams;
 import com.joo.everyletter_back.auth.oauth.naver.NaverParams;
 import com.joo.everyletter_back.auth.service.AuthService;
@@ -36,11 +33,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ApiSuccResp<TokenDto> login(@RequestBody UserAuthReq userAuthReq, HttpServletResponse response) {
-        TokenDto tokenDto = authService.login(userAuthReq);
-        response.addHeader(HttpHeaders.AUTHORIZATION, tokenDto.getAccessToken());
-        response.addCookie(SecurityUtil.createCookie("refreshToken", tokenDto.getRefreshToken()));
-        return ApiSuccResp.from(tokenDto);
+    public ApiSuccResp<LoginSuccResp> login(@RequestBody UserAuthReq userAuthReq, HttpServletResponse response) {
+        LoginDto loginDto = authService.login(userAuthReq);
+        return loginInfoSet(loginDto, response);
     }
 
     @PostMapping("/reissue")
@@ -59,26 +54,37 @@ public class AuthController {
 
 
     @PostMapping("/oauth/kakao")
-    public ApiSuccResp<TokenDto> handleKakaoLogin(@RequestBody KakaoParams kakaoParams, HttpServletResponse response){
+    public ApiSuccResp<LoginSuccResp> handleKakaoLogin(@RequestBody KakaoParams kakaoParams, HttpServletResponse response){
         log.debug("넘겨받은 Kakao 인증키 :: " + kakaoParams.getAuthorizationCode());
 
-        TokenDto tokenDto = oauthService.getMemberByOauthLogin(kakaoParams);
-        //응답 헤더 생성
-        response.addHeader(HttpHeaders.AUTHORIZATION, tokenDto.getAccessToken());
-        response.addCookie(SecurityUtil.createCookie("refreshToken", tokenDto.getRefreshToken()));
-        return ApiSuccResp.from(tokenDto);
+        LoginDto loginDto = oauthService.getMemberByOauthLogin(kakaoParams);
+
+        return loginInfoSet(loginDto, response);
     }
 
     @PostMapping("/oauth/naver")
-    public ApiSuccResp<TokenDto> handleNaverLogin(@RequestBody NaverParams naverParams, HttpServletResponse response){
+    public ApiSuccResp<LoginSuccResp> handleNaverLogin(@RequestBody NaverParams naverParams, HttpServletResponse response){
         log.debug("넘겨받은 naver 인증키 :: " + naverParams.getAuthorizationCode());
 
-        TokenDto tokenDto = oauthService.getMemberByOauthLogin(naverParams);
-        //응답 헤더 생성
-        response.addHeader(HttpHeaders.AUTHORIZATION, tokenDto.getAccessToken());
-        response.addCookie(SecurityUtil.createCookie("refreshToken", tokenDto.getRefreshToken()));
+        LoginDto loginDto = oauthService.getMemberByOauthLogin(naverParams);
 
-        return ApiSuccResp.from(tokenDto);
+        return loginInfoSet(loginDto, response);
     }
 
+    private ApiSuccResp<LoginSuccResp> loginInfoSet(LoginDto loginDto, HttpServletResponse response){
+
+        //응답 헤더 생성
+        response.addHeader(HttpHeaders.AUTHORIZATION, loginDto.getTokenDto().getAccessToken());
+        response.addCookie(SecurityUtil.createCookie("refreshToken", loginDto.getTokenDto().getRefreshToken()));
+
+        LoginSuccResp loginSuccResp = LoginSuccResp.builder()
+                .userId(loginDto.getUserId())
+                .email(loginDto.getEmail())
+                .nickname(loginDto.getNickname())
+                .profileUrl(loginDto.getProfileUrl())
+                .role(loginDto.getRole())
+                .build();
+
+        return ApiSuccResp.from(loginSuccResp);
+    }
 }

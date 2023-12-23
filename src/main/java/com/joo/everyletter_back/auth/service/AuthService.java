@@ -1,9 +1,6 @@
 package com.joo.everyletter_back.auth.service;
 
-import com.joo.everyletter_back.auth.dto.TokenDto;
-import com.joo.everyletter_back.auth.dto.TokenRequestDto;
-import com.joo.everyletter_back.auth.dto.UserAuthReq;
-import com.joo.everyletter_back.auth.dto.UserAuthResp;
+import com.joo.everyletter_back.auth.dto.*;
 import com.joo.everyletter_back.common.exception.ServiceException;
 import com.joo.everyletter_back.common.jwt.TokenProvider;
 import com.joo.everyletter_back.common.model.entity.EmailAuth;
@@ -52,7 +49,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenDto login(UserAuthReq userAuthReq) {
+    public LoginDto login(UserAuthReq userAuthReq) {
 
         User user = userRepository.findByEmail(userAuthReq.getEmail())
                 .orElseThrow(() -> ServiceException.WRONG_EMAIL_OR_PASSWORD);
@@ -84,7 +81,8 @@ public class AuthService {
         refreshTokenRepository.save(refreshToken);
 
         // 5. 토큰 발급
-        return tokenDto;
+        return new LoginDto(tokenDto, user.getId(), user.getEmail(),
+                user.getNickname(), user.getProfileUrl(), user.getRole());
     }
 
     @Transactional
@@ -108,12 +106,6 @@ public class AuthService {
         }
 
         // 5. 새로운 토큰 생성
-        TokenDto tokenDto = tokenProvider.generateAccessToken(authentication);
-
-        // 6. 저장소 정보 업데이트
-        // 만료되면 RefreshToken 테이블에서 삭제해야됨
-
-        // 토큰 발급
-        return tokenDto;
+        return tokenProvider.generateAccessToken(authentication);
     }
 }

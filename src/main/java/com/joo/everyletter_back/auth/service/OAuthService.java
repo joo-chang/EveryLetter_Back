@@ -1,5 +1,6 @@
 package com.joo.everyletter_back.auth.service;
 
+import com.joo.everyletter_back.auth.dto.LoginDto;
 import com.joo.everyletter_back.auth.dto.TokenDto;
 import com.joo.everyletter_back.auth.oauth.OauthMember;
 import com.joo.everyletter_back.auth.oauth.OauthParams;
@@ -32,17 +33,17 @@ public class OAuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     // 받아온 유저정보로 로그인 시도
-    public TokenDto getMemberByOauthLogin(OauthParams oauthParams) {
+    public LoginDto getMemberByOauthLogin(OauthParams oauthParams) {
         log.debug("------ Oauth 로그인 시도 ------");
-
+        LoginDto loginDto = new LoginDto();
         // 인증 파라미터 객체를 이용하여 해당 enum클래스에 해당하는 메소드 수행
         OauthMember oauthMember = requestOauthInfoService.request(oauthParams);
         log.debug("전달받은 유저정보:: " + oauthMember.getEmail());
 
         // 획득된 회원정보 DB 조회
-        Optional<User> user = userRepository.findByEmail(oauthMember.getEmail());
+        Optional<User> findUser = userRepository.findByEmail(oauthMember.getEmail());
 
-        if (user.isEmpty()) {
+        if (findUser.isEmpty()) {
             log.info("------ 회원가입 필요한 회원 ------");
             // 회원가입이 되지 않은 회원이기 때문에 회원 DTO에 값을 전달하여 DB저장
             log.info("회원가입 요청 :: " + oauthMember.getEmail());
@@ -50,23 +51,28 @@ public class OAuthService {
             User topUser = userRepository.findTopByOrderByCreatedDateDesc();
 
             // kakaoMember에서 전달된 데이터를 가진 memberDTO DB 저장
-            userRepository.save(User.builder()
-                            .email(oauthMember.getEmail())
-                            .nickname("익명" + String.format("%05d", topUser.getId() + 1))
-                            .password(passwordEncoder.encode(oauthParams.oauthProvider().toString()))
-                            .role(Role.ROLE_USER)
-                            .oauthProvider(oauthParams.oauthProvider())
-                            .build());
+            User user = userRepository.save(User.builder()
+                    .email(oauthMember.getEmail())
+                    .nickname("익명" + String.format("%05d", topUser.getId() + 1))
+                    .password(passwordEncoder.encode(oauthParams.oauthProvider().toString()))
+                    .role(Role.ROLE_USER)
+                    .oauthProvider(oauthParams.oauthProvider())
+                    .build());
 
+            //회원 정보 세팅
+            loginDto.setUserInfo(user.getId(), user.getEmail(), user.getNickname(), user.getProfileUrl(), user.getRole());
             log.debug("회원가입 완료 :: " + oauthMember.getEmail());
-        } else if (user.get().getOauthProvider() != oauthParams.oauthProvider()) {
-            throw ServiceException.ALREADY_EXIST_USER;
+        } else {
+            if (findUser.get().getOauthProvider() != oauthParams.oauthProvider()) {
+                throw ServiceException.ALREADY_EXIST_USER;
+            }
+            //회원 정보 세팅
+            loginDto.setUserInfo(findUser.get().getId(), findUser.get().getEmail(), findUser.get().getNickname(),
+                    findUser.get().getProfileUrl(), findUser.get().getRole());
         }
 
         // 이미 가입된 회원은 토큰발급
         log.debug("------ JWT 발급 ------");
-
-
 
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(oauthMember.getEmail(), oauthParams.oauthProvider().toString());
@@ -83,7 +89,8 @@ public class OAuthService {
                 .build();
 
         refreshTokenRepository.save(refreshToken);
+        loginDto.setTokenDto(tokenDto);
         log.debug("------ JWT 발급완료 ------");
-        return tokenDto;
+        return loginDto;
     }
 }
