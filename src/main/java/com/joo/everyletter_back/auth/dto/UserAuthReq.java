@@ -16,12 +16,14 @@ public class UserAuthReq {
     private String email;
     private String password;
     private String nickname;
+    private String profile;
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .nickname(nickname)
+                .profileUrl(profile)
                 .role(Role.ROLE_USER)
                 .build();
     }
