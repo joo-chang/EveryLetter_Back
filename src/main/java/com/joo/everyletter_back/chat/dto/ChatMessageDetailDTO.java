@@ -1,6 +1,6 @@
 package com.joo.everyletter_back.chat.dto;
 
-import com.joo.everyletter_back.common.model.entity.ChatMessageEntity;
+import com.joo.everyletter_back.common.model.entity.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,16 +17,16 @@ public class ChatMessageDetailDTO {
     private String writer;
     private String message;
 
-    public static ChatMessageDetailDTO toChatMessageDetailDTO(ChatMessageEntity chatMessageEntity){
+    public static ChatMessageDetailDTO toChatMessageDetailDTO(ChatMessage chatMessage){
         ChatMessageDetailDTO chatMessageDetailDTO = new ChatMessageDetailDTO();
 
-        chatMessageDetailDTO.setChatId(chatMessageEntity.getId());
+        chatMessageDetailDTO.setChatId(chatMessage.getId());
 
-        chatMessageDetailDTO.setChatRoomId(chatMessageEntity.getChatRoomEntity().getId());
-        chatMessageDetailDTO.setRoomId(chatMessageEntity.getChatRoomEntity().getRoomId());
+        chatMessageDetailDTO.setChatRoomId(chatMessage.getChatRoom().getId());
+        chatMessageDetailDTO.setRoomId(chatMessage.getChatRoom().getRoomId());
 
-        chatMessageDetailDTO.setWriter(chatMessageEntity.getWriter());
-        chatMessageDetailDTO.setMessage(chatMessageEntity.getMessage());
+        chatMessageDetailDTO.setWriter(chatMessage.getWriter());
+        chatMessageDetailDTO.setMessage(chatMessage.getMessage());
 
         return chatMessageDetailDTO;
 

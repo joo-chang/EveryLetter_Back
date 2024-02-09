@@ -1,6 +1,6 @@
 package com.joo.everyletter_back.chat.dto;
 
-import com.joo.everyletter_back.common.model.entity.ChatRoomEntity;
+import com.joo.everyletter_back.common.model.entity.ChatRoom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ public class ChatRoomDetailDTO {
     private String roomId;
     private String name;
 
-    public static ChatRoomDetailDTO toChatRoomDetailDTO(ChatRoomEntity chatRoomEntity){
+    public static ChatRoomDetailDTO toChatRoomDetailDTO(ChatRoom chatRoomEntity){
         ChatRoomDetailDTO chatRoomDetailDTO = new ChatRoomDetailDTO();
 
         chatRoomDetailDTO.setChatRoomId(chatRoomEntity.getId());
